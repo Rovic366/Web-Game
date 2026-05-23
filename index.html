@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Fraud Detective - Cozy pixel art puzzle game about fraud awareness. Choose your character, open your phone, and solve cases!">
+  <title>Cozy Fraud Detective – A Stardew Valley Style Puzzle Game</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <!-- CRT Retro lines effect -->
+  <div class="crt-overlay"></div>
+
+  <!-- ========== CHARACTER SELECTION SCREEN ========== -->
+  <div id="char-select-screen" class="screen active">
+    <div class="stardew-panel" style="max-width: 500px; width: 100%; text-align: center;">
+      <h1 class="char-select-title">AVATAR SELECT</h1>
+      <p style="margin-bottom: 16px; font-size: 0.9rem;">Choose your character to begin the cozy adventure</p>
+      
+      <div class="char-grid" style="margin-bottom: 24px;">
+        <div class="avatar-option selected" id="avatar-0" data-avatar="0"></div>
+        <div class="avatar-option" id="avatar-1" data-avatar="1"></div>
+        <div class="avatar-option" id="avatar-2" data-avatar="2"></div>
+        <div class="avatar-option" id="avatar-3" data-avatar="3"></div>
+      </div>
+
+      <div class="name-input-container" style="margin: 0 auto 24px auto;">
+        <label class="name-label" for="player-name">ENTER YOUR NAME:</label>
+        <input type="text" id="player-name" class="name-input" value="Farmer" maxlength="12">
+      </div>
+
+      <button id="confirm-char-btn" class="stardew-btn">ENTER COZY TOWN</button>
+    </div>
+  </div>
+
+  <!-- ========== SCREEN 2: COZY HOUSE MAIN HUB ========== -->
+  <div id="house-hub-screen" class="screen">
+    <div class="house-frame">
+      <!-- Phone lying on the table with hovering animation and glowing indicator -->
+      <div class="interactive-phone-anchor" id="desk-phone">
+        <div class="phone-indicator">ALERT!</div>
+        <img src="assets/phone.png" alt="Phone on desk" class="phone-sprite-img">
+      </div>
+
+      <!-- Dialogue box showing selected character avatar and dynamic texts -->
+      <div class="stardew-speech-box">
+        <div class="stardew-speech-avatar" id="speech-avatar"></div>
+        <div class="stardew-speech-content">
+          <div class="stardew-speech-name" id="speech-name">Farmer</div>
+          <div id="speech-text">Whew, home at last. Wait, is my smartphone buzzing on the desk? I should click on it and check the incoming messages.</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ========== PHONE SIMULATOR DIALOG/MODAL ========== -->
+    <div class="phone-modal-overlay" id="phone-modal">
+      <div class="phone-device">
+        <!-- Phone Top Bar -->
+        <div class="phone-screen-header">
+          <span class="phone-screen-time">16:34</span>
+          <span style="font-size: 0.55rem; color: #aaa;">BuzzApp</span>
+          <div class="phone-screen-icons">📡 🔋 98%</div>
+        </div>
+        <!-- Phone Screen Body -->
+        <div class="phone-screen-body">
+          <div class="phone-app-title">📱 INBOX ALERTS</div>
+          
+          <!-- Case Lists - All fully unlocked from the beginning -->
+          <div id="phone-cases-list">
+            <!-- Case list generated dynamically in game.js -->
+          </div>
+
+          <button class="phone-close-btn" id="close-phone-btn">PUT PHONE DOWN</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ========== SCREEN 3: GAMEPLAY SCREEN ========== -->
+  <div id="game-screen" class="screen">
+    <div class="stardew-game-container">
+      <!-- HUD -->
+      <div class="stardew-hud">
+        <span class="hud-score-label">SCORE: <span class="hud-score-val" id="hud-score">0</span></span>
+        <span class="hud-score-label" id="hud-level-name">CASE</span>
+        <button class="stardew-btn" id="hud-quit-btn" style="padding: 6px 12px; font-size: 0.6rem;">QUIT</button>
+      </div>
+
+      <!-- Gameplay Box -->
+      <div class="stardew-panel" id="game-area">
+        <!-- Puzzle elements loaded dynamically -->
+      </div>
+
+      <!-- Custom cozy speech response panel below the gameplay area -->
+      <div class="stardew-speech-box" style="position: static; height: 110px;">
+        <div class="stardew-speech-avatar" id="game-speech-avatar"></div>
+        <div class="stardew-speech-content">
+          <div class="stardew-speech-name" id="game-speech-name">Farmer</div>
+          <div id="game-speech-text">Let's solve this case.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ========== LEVEL COMPLETE SCREEN ========== -->
+  <div id="level-complete" class="screen">
+    <div class="stardew-panel" style="max-width: 500px; width: 100%; text-align: center;">
+      <div class="level-complete-badge" id="level-badge">⭐</div>
+      <h2 class="char-select-title" id="level-complete-title" style="font-size: 1.3rem;">CASE SOLVED!</h2>
+      <p style="margin-bottom: 16px; font-size: 0.9rem;" id="level-complete-subtitle">Splendid work!</p>
+      
+      <div style="background: rgba(0,0,0,0.1); border: 2px solid var(--wood-medium); padding: 12px; margin-bottom: 16px; font-size: 0.85rem; line-height: 1.4; text-align: left;">
+        <div style="font-family: var(--font-pixel); font-size: 0.55rem; color: var(--wood-medium); margin-bottom: 6px;">TOWN ELDER'S SECURITY TIP:</div>
+        <div id="fraud-tip-text">Always check the sender.</div>
+      </div>
+
+      <div style="display: flex; gap: 12px; justify-content: center;">
+        <button id="next-case-btn" class="stardew-btn">RETURN TO DESK</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ========== GAME OVER / COMPLETE SCREEN ========== -->
+  <div id="game-complete" class="screen">
+    <div class="stardew-panel" style="max-width: 500px; width: 100%; text-align: center;">
+      <div class="level-complete-badge">🏆</div>
+      <h2 class="char-select-title" style="font-size: 1.3rem;">TOWN PROTECTOR!</h2>
+      <p style="margin-bottom: 16px; font-size: 0.9rem;">You have handled every security case on your phone!</p>
+      
+      <div style="font-size: 1.8rem; font-family: var(--font-pixel); color: var(--gold-accent); margin-bottom: 16px;">
+        SCORE: <span id="final-score">0</span>
+      </div>
+
+      <div class="final-tips" style="text-align: left; background: rgba(0,0,0,0.1); border: 2px solid var(--wood-medium); padding: 12px; font-size: 0.85rem; line-height: 1.4; margin-bottom: 20px;">
+        <div style="font-family: var(--font-pixel); font-size: 0.55rem; color: var(--wood-medium); margin-bottom: 8px;">KEY TAKEAWAYS:</div>
+        <div class="final-tip-item">🔐 Keep accounts safe with multi-factor authentication.</div>
+        <div class="final-tip-item">📞 Reject immediate payment requests like gift cards.</div>
+        <div class="final-tip-item">🖥️ Never plug in unknown flash drives found on the ground.</div>
+      </div>
+
+      <div style="display: flex; gap: 12px; justify-content: center;">
+        <button id="play-again-btn" class="stardew-btn">PLAY AGAIN</button>
+      </div>
+    </div>
+  </div>
+
+  <script src="game.js"></script>
+</body>
+</html>
